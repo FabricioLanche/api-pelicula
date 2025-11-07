@@ -21,8 +21,11 @@ def lambda_handler(event, context):
         }
         print(json.dumps(log_evento))
         
-        # Parseo del body (API Gateway envía body como string JSON)
-        body = json.loads(event['body'])
+        if isinstance(event['body'], str):
+            body = json.loads(event['body'])
+        else:
+            body = event['body']
+        
         tenant_id = body['tenant_id']
         pelicula_datos = body['pelicula_datos']
         nombre_tabla = os.environ["TABLE_NAME"]
